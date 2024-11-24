@@ -6,7 +6,6 @@
 // "Число X является чётным"
 // "Число X является нечётным"
 
-
 package main
 
 import (
@@ -37,18 +36,18 @@ func calcParity(number float64, numberPower int) string {
 	// Проверяем чётность целой части
 	var result string
 	if intPart%2 == 0 {
-		result = fmt.Sprintf("Целая часть %d чётная", intPart)
+		result = fmt.Sprintf("Integer part %d is even", intPart)
 	} else {
-		result = fmt.Sprintf("Целая часть %d нечётная", intPart)
+		result = fmt.Sprintf("Integer part %d odd", intPart)
 	}
 
 	// Обрабатываем дробную часть
 	numberMultiplicator := int(math.Pow(float64(10), float64(numberPower)))
 	resultNumber := int(number * float64(numberMultiplicator))
 	if resultNumber%2 == 0 {
-		result += fmt.Sprintf(", дробная часть чётная")
+		result += fmt.Sprintf(", the fractional part is even")
 	} else {
-		result += fmt.Sprintf(", дробная часть нечётная")
+		result += fmt.Sprintf(", the fractional part is odd")
 	}
 
 	return result
