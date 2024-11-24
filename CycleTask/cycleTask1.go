@@ -37,8 +37,8 @@ func calcData(value1 float64, value2 float64, operation string) string {
 			answer = value1 / value2
 		} else {
 			return "Devided by zero is prohibited"
-		} 
-	default : 
+		}
+	default:
 		return "You choose invalid operation. Restart script"
 	}
 	return fmt.Sprintf("= %g", answer)
