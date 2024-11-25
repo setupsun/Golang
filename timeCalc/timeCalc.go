@@ -12,6 +12,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -19,6 +20,9 @@ func getUserInput() string {
 	var inputTime string
 	fmt.Print("Enter time (HH:MM or 'Now'): ")
 	fmt.Scan(&inputTime)
+
+	inputTime = strings.TrimSpace(inputTime)
+
 	return inputTime
 }
 
@@ -27,13 +31,11 @@ func parseTime(timeStr string) (time.Time, error) {
 		return time.Now(), nil
 	}
 
-	// Парсим только время (HH:MM), привязывая его к текущей дате
 	parsedTime, err := time.Parse("15:04", timeStr)
 	if err != nil {
 		return time.Time{}, err
 	}
 
-	// Привязываем время к сегодняшней дате
 	now := time.Now()
 	parsedTime = time.Date(now.Year(), now.Month(), now.Day(),
 		parsedTime.Hour(), parsedTime.Minute(), 0, 0, now.Location())
@@ -42,6 +44,10 @@ func parseTime(timeStr string) (time.Time, error) {
 
 func calculateTimeDifference(time1, time2 time.Time) (int, int) {
 	diff := time2.Sub(time1)
+	if diff < 0 {
+		diff = -diff
+	}
+
 	hours := int(diff.Hours())
 	minutes := int(diff.Minutes()) % 60
 	return hours, minutes
@@ -62,9 +68,15 @@ func main() {
 		return
 	}
 
-	// Вычисляем разницу
 	hours, minutes := calculateTimeDifference(parsedTime1, parsedTime2)
 
-	// Корректный вывод
-	fmt.Printf("Time difference: %d hours and %d minutes.\n", hours, minutes)
+	if hours == 0 && minutes == 0 {
+		fmt.Println("No difference in time.")
+	} else if hours == 0 {
+		fmt.Printf("Time difference: %d minutes.\n", minutes)
+	} else if minutes == 0 {
+		fmt.Printf("Time difference: %d hours.\n", hours)
+	} else {
+		fmt.Printf("Time difference: %d hours and %d minutes.\n", hours, minutes)
+	}
 }
